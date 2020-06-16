@@ -60,10 +60,7 @@ extension TableViewController {
 ```swift
 extension TableViewController: PullToBrewDelegate {
   func refreshViewDidRefresh(_ refreshView: PullToBrewView) {
-    let delay = Double.random(in: 3...8)
-    DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: {
-      refreshView.endRefreshing()
-    })
+    // load data and call `refreshView.endRefreshing()` when loading is finished
   }
 }
 ```
