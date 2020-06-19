@@ -29,8 +29,8 @@ public class PullToBrewView: SKView {
     
     presentScene(brewScene)
     
-//    showsFPS = true
-//    showsNodeCount = true
+    showsFPS = true
+    showsNodeCount = true
 //    showsPhysics = true
   }
   

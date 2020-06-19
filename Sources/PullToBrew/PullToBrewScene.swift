@@ -95,6 +95,11 @@ extension PullToBrewScene {
     physicsWorld.gravity = CGVector(dx: 0.0, dy: -1)
     physicsWorld.contactDelegate = self
     coffeePosition = CGFloat.random(in: 20..<frame.size.width-20)
+    
+    let worldFrame = frame.insetBy(dx: -100, dy: -100)
+    
+    physicsBody = SKPhysicsBody(edgeLoopFrom: worldFrame)
+    physicsBody?.categoryBitMask = ContactCategory.world.rawValue
   }
   
   func setupLoadingLabelNode() {
@@ -138,8 +143,22 @@ extension PullToBrewScene {
     drop.color = .brown
     drop.physicsBody = SKPhysicsBody(circleOfRadius: ceil(drop.size.width/2.0))
     drop.physicsBody?.mass = 0
+    drop.physicsBody?.categoryBitMask = ContactCategory.drop.rawValue
+    drop.physicsBody?.contactTestBitMask = ContactCategory.world.rawValue
     
     drops.append(drop)
     insertChild(drop, at: 0)
+  }
+  
+  func didBegin(_ contact: SKPhysicsContact) {
+    if contact.bodyA.categoryBitMask == ContactCategory.world.rawValue {
+      contact.bodyB.node?.removeFromParent()
+      contact.bodyB.node?.physicsBody = nil
+      contact.bodyB.node?.removeAllActions()
+    } else if contact.bodyB.categoryBitMask == ContactCategory.world.rawValue {
+      contact.bodyA.node?.removeFromParent()
+      contact.bodyA.node?.physicsBody = nil
+      contact.bodyA.node?.removeAllActions()
+    }
   }
 }
